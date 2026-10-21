@@ -1,0 +1,521 @@
+/* Menghilangkan jarak pinggir (margin) dan ruang dalam (padding) bawaan dari semua elemen browser */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Pengaturan dasar untuk keseluruhan layar web */
+body {
+    background-color: #6b6b6b; /* Warna latar belakang abu-abu tua */
+    font-family: Arial, sans-serif; /* Jenis huruf standar */
+    color: #ffffff; /* Warna teks putih bersih */
+    min-height: 100vh; /* Tinggi minimal seluas layar perangkat */
+    display: flex; /* Mengaktifkan sistem tata letak fleksibel */
+    flex-direction: column; /* Menyusun elemen secara vertikal dari atas ke bawah */
+    justify-content: space-between; /* Mendorong header ke atas dan footer ke bawah secara maksimal */
+    position: relative; /* Menjadikan body sebagai titik acuan posisi absolut */
+    overflow-x: hidden; /* Mencegah layar bergeser ke samping secara horizontal */
+}
+
+/* Menyembunyikan seluruh elemen kotak centang (checkbox) dan radio bawaan agar tidak terlihat */
+input[type="radio"],
+input[type="checkbox"] {
+    display: none;
+}
+
+/* TAMPILAN IKON KERANJANG DI POJOK KANAN ATAS */
+.cart-indicator {
+    position: absolute; /* Mengunci posisi agar bebas ditaruh di pojok layar */
+    top: 20px; /* Jarak 20 piksel dari atas layar */
+    right: 40px; /* Jarak 40 piksel dari kanan layar */
+    background-color: rgba(0, 0, 0, 0.4); /* Warna latar belakang hitam transparan */
+    padding: 8px 18px; /* Ruang dalam (jarak isi ke pinggir kotak) */
+    border-radius: 20px; /* Membuat sudut kotak melengkung seperti pil */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    align-items: center; /* Menyelaraskan ikon dan angka agar sejajar di tengah secara vertikal */
+    gap: 8px; /* Jarak kosong antara ikon keranjang dan angka */
+    font-size: 1.2rem; /* Ukuran teks dan ikon */
+    z-index: 15; /* Lapisan posisi supaya berada di atas elemen lain */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Garis tepi tipis transparan */
+    cursor: pointer; /* Mengubah bentuk kursor menjadi tangan saat disentuh */
+    transition: background-color 0.2s; /* Efek transisi halus saat warna berubah */
+}
+
+/* Efek saat kursor menyentuh ikon keranjang */
+.cart-indicator:hover {
+    background-color: rgba(0, 0, 0, 0.6); /* Warna latar jadi lebih gelap saat disentuh */
+}
+
+/* Mengatur angka jumlah item di dalam keranjang (Secara default bernilai "0") */
+.cart-count::before {
+    content: "0"; /* Nilai bawaan teks angka sebelum produk dipilih */
+}
+
+/* LOGIKA CSS 1: Jika item 1 ATAU item 2 dicentang, angka keranjang otomatis berubah jadi "1" */
+#cart-item-1:checked ~ .cart-indicator .cart-count::before,
+#cart-item-2:checked ~ .cart-indicator .cart-count::before {
+    content: "1";
+}
+
+/* LOGIKA CSS 2: Jika item 1 DAN item 2 KEDUANYA dicentang, angka keranjang berubah jadi "2" */
+#cart-item-1:checked ~ #cart-item-2:checked ~ .cart-indicator .cart-count::before {
+    content: "2";
+}
+
+/* PENGATURAN KOTAK POP-UP (MODAL) KERANJANG BELANJA */
+.cart-modal {
+    position: fixed; /* Mengunci posisi menutupi seluruh layar penuh */
+    top: 0;
+    left: 0;
+    width: 100%; /* Lebar penuh layar */
+    height: 100%; /* Tinggi penuh layar */
+    background-color: rgba(0, 0, 0, 0.6); /* Latar belakang gelap transparan di luar pop-up */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    justify-content: center; /* Memposisikan pop-up di tengah secara horizontal */
+    align-items: center; /* Memposisikan pop-up di tengah secara vertikal */
+    z-index: 100; /* Lapisan paling atas agar menutupi segalanya */
+    opacity: 0; /* Membuat pop-up transparan total (tak terlihat) secara default */
+    visibility: hidden; /* Menyembunyikan pop-up agar tidak bisa diklik saat tertutup */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Efek muncul halus */
+}
+
+/* LOGIKA CSS: Memunculkan pop-up saat kotak centang #cart-toggle aktif (ikon keranjang diklik) */
+#cart-toggle:checked ~ .cart-modal {
+    opacity: 1; /* Mengubah transparansi jadi penuh (terlihat) */
+    visibility: visible; /* Mengaktifkan visibilitas agar bisa diklik */
+}
+
+/* Tampilan visual kotak dialog pop-up keranjang */
+.cart-modal-content {
+    background-color: #333333; /* Warna latar belakang kotak pop-up */
+    padding: 30px; /* Ruang jarak di dalam kotak */
+    border-radius: 8px; /* Membuat sudut kotak sedikit melengkung */
+    width: 90%; /* Lebar kotak mengikuti layar */
+    max-width: 400px; /* Batas maksimal lebar kotak pop-up */
+    text-align: center; /* Mengatur teks berada di tengah */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Efek bayangan di bawah kotak */
+    border: 1px solid rgba(255,255,255,0.1); /* Garis tepi tipis */
+}
+
+/* Pengaturan judul di dalam pop-up */
+.cart-modal-content h3 {
+    margin-bottom: 20px; /* Jarak ke bawah sebelum masuk daftar item */
+    font-size: 1.4rem; /* Ukuran huruf judul */
+    color: #ffffff; /* Warna teks putih */
+}
+
+/* Area daftar produk di dalam keranjang */
+.cart-items-list {
+    margin-bottom: 25px; /* Jarak ke bawah sebelum tombol aksi */
+    text-align: left; /* Teks di dalam daftar rata kiri */
+    min-height: 60px; /* Tinggi minimal wadah */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    flex-direction: column; /* Menyusun item ke bawah secara vertikal */
+    gap: 10px; /* Jarak antar item produk */
+}
+
+/* Teks pemberitahuan saat keranjang kosong */
+.empty-msg {
+    color: #aaaaaa; /* Warna abu-abu */
+    font-style: italic; /* Huruf miring */
+    text-align: center; /* Posisi teks di tengah */
+}
+
+/* LOGIKA CSS: Sembunyikan teks "kosong" jika salah satu atau kedua item produk dicentang masuk keranjang */
+#cart-item-1:checked ~ .cart-modal .empty-msg,
+#cart-item-2:checked ~ .cart-modal .empty-msg {
+    display: none;
+}
+
+/* Pengaturan umum tampilan item produk di dalam pop-up */
+.cart-item {
+    display: none; /* Sembunyikan item secara default */
+    background-color: #444444; /* Warna latar item */
+    padding: 10px 15px; /* Ruang dalam item */
+    border-radius: 4px; /* Sudut melengkung halus */
+    font-size: 1rem; /* Ukuran huruf */
+    justify-content: space-between; /* Mendorong nama produk ke kiri dan tombol X ke kanan */
+    align-items: center; /* Menyelaraskan posisi secara vertikal di tengah */
+}
+
+/* Sembunyikan item 1 dan 2 secara bawaan */
+.cart-item.item-1,
+.cart-item.item-2 {
+    display: none;
+}
+
+/* LOGIKA CSS: Munculkan item 1 di dalam pop-up jika checkbox item 1 dicentang */
+#cart-item-1:checked ~ .cart-modal .cart-items-list .item-1 {
+    display: flex; /* Mengubah tampilan jadi fleksibel agar sejajar */
+}
+
+/* LOGIKA CSS: Munculkan item 2 di dalam pop-up jika checkbox item 2 dicentang */
+#cart-item-2:checked ~ .cart-modal .cart-items-list .item-2 {
+    display: flex; /* Mengubah tampilan jadi fleksibel agar sejajar */
+}
+
+/* Styling visual tombol 'X' untuk menghapus produk dari keranjang */
+.remove-btn {
+    background-color: #f44336; /* Warna merah latar belakang tombol */
+    color: white; /* Warna teks ikon X */
+    width: 24px; /* Lebar tombol */
+    height: 24px; /* Tinggi tombol */
+    border-radius: 50%; /* Membuat tombol berbentuk lingkaran penuh */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    justify-content: center; /* Posisi huruf X di tengah secara horizontal */
+    align-items: center; /* Posisi huruf X di tengah secara vertikal */
+    font-size: 14px; /* Ukuran huruf X */
+    font-weight: bold; /* Menebalkan huruf X */
+    cursor: pointer; /* Mengubah kursor jadi tangan */
+    transition: background-color 0.2s; /* Efek transisi halus */
+}
+
+/* Efek saat kursor menyentuh tombol 'X' */
+.remove-btn:hover {
+    background-color: #d32f2f; /* Warna merah lebih gelap saat disentuh */
+}
+
+/* Penataan area tombol aksi di dalam pop-up keranjang (Supaya berdampingan rapi) */
+.cart-modal-actions {
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    justify-content: space-between; /* Memberi jarak antar tombol secara merata */
+    gap: 10px; /* Jarak antar tombol */
+}
+
+/* Tombol Tutup pada bagian bawah pop-up keranjang */
+.close-cart-btn {
+    flex: 1; /* Membagi rata ruang ukuran tombol */
+    display: inline-block;
+    background-color: #f44336; /* Warna latar merah */
+    color: white; /* Warna teks putih */
+    padding: 10px 0; /* Ruang dalam atas-bawah */
+    border-radius: 4px; /* Sudut melengkung halus */
+    cursor: pointer; /* Kursor jadi tangan */
+    font-weight: bold; /* Teks tebal */
+    text-align: center; /* Teks berada di tengah */
+    transition: background-color 0.2s;
+}
+
+.close-cart-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Styling visual Tombol Checkout */
+.checkout-btn {
+    flex: 1; /* Membagi rata ruang ukuran tombol */
+    background-color: #4CAF50; /* Warna hijau penanda lanjut transaksi */
+    color: white; /* Warna teks putih */
+    padding: 10px 0; /* Ruang dalam atas-bawah */
+    border-radius: 4px; /* Sudut melengkung */
+    cursor: pointer; /* Kursor jadi tangan */
+    font-weight: bold; /* Teks tebal */
+    text-align: center; /* Teks di tengah */
+    transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+    background-color: #45a049;
+}
+
+/* Styling visual Tombol Belanja Lagi (Muncul setelah di-checkout) */
+.back-to-shop-btn {
+    display: none; /* Sembunyikan tombol secara default */
+    flex: 1; /* Membagi rata ruang ukuran tombol */
+    background-color: #2196F3; /* Warna latar biru cerah penanda kembali/reset */
+    color: white; /* Warna teks putih */
+    padding: 10px 0; /* Ruang dalam atas-bawah */
+    border-radius: 4px; /* Sudut melengkung */
+    cursor: pointer; /* Kursor jadi tangan */
+    font-weight: bold; /* Teks tebal */
+    text-align: center; /* Teks di tengah */
+    transition: background-color 0.2s;
+}
+
+.back-to-shop-btn:hover {
+    background-color: #0b7dda; /* Warna biru lebih gelap saat kursor menyentuh */
+}
+
+/* Pesan sukses yang disembunyikan secara default sebelum checkout ditekan */
+.checkout-success-msg {
+    display: none; /* Sembunyikan pesan secara default */
+    color: #4CAF50; /* Warna teks hijau */
+    font-weight: bold; /* Teks tebal */
+    text-align: center; /* Teks di tengah */
+    background-color: rgba(76, 175, 80, 0.1); /* Latar hijau sangat transparan */
+    padding: 12px; /* Ruang dalam kotak pesan */
+    border-radius: 4px; /* Sudut melengkung */
+    border: 1px solid #4CAF50; /* Garis tepi hijau */
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+/* LOGIKA CSS: Saat tombol checkout ditekan, sembunyikan daftar produk di dalam pop-up */
+#checkout-toggle:checked ~ .cart-modal .cart-items-list .cart-item {
+    display: none !important;
+}
+
+#checkout-toggle:checked ~ .cart-modal .cart-items-list .empty-msg {
+    display: none !important;
+}
+
+/* Memunculkan pesan sukses saat tombol checkout ditekan */
+#checkout-toggle:checked ~ .cart-modal .cart-items-list .checkout-success-msg {
+    display: block;
+}
+
+/* Sembunyikan tombol Tutup dan Checkout biasa hanya setelah tombol checkout benar-benar diklik */
+#checkout-toggle:checked ~ .cart-modal .close-cart-btn,
+#checkout-toggle:checked ~ .cart-modal .checkout-btn {
+    display: none;
+}
+
+/* Munculkan tombol Belanja Lagi hanya setelah proses checkout aktif */
+#checkout-toggle:checked ~ .cart-modal .back-to-shop-btn {
+    display: block;
+}
+
+/* Styling visual tombol "Masukkan Keranjang" di halaman utama */
+.add-to-cart-btn {
+    display: inline-block;
+    margin-top: 15px; /* Jarak ke atas dari teks deskripsi */
+    background-color: #ff9800; /* Warna oranye terang penarik perhatian */
+    color: #ffffff; /* Teks putih */
+    padding: 8px 20px; /* Ruang dalam tombol */
+    font-size: 0.9rem;
+    font-weight: bold; /* Teks tebal */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Efek bayangan lembut */
+}
+
+.add-to-cart-btn:hover {
+    background-color: #e68a00;
+}
+
+.add-to-cart-btn:active {
+    transform: scale(0.96); /* Efek tombol sedikit mengecil saat ditekan */
+}
+
+/* LOGIKA CSS: Mengubah warna tombol jadi hijau saat produk 1 dimasukkan ke keranjang */
+#cart-item-1:checked ~ .container .main-content .content-1 label[for="cart-item-1"] {
+    background-color: #4CAF50;
+}
+/* Menambahkan teks centang sukses pada tombol produk 1 */
+#cart-item-1:checked ~ .container .main-content .content-1 label[for="cart-item-1"]::after {
+    content: " ✓ (Masuk Keranjang)";
+}
+
+/* LOGIKA CSS: Mengubah warna tombol jadi hijau saat produk 2 dimasukkan ke keranjang */
+#cart-item-2:checked ~ .container .main-content .content-2 label[for="cart-item-2"] {
+    background-color: #4CAF50;
+}
+/* Menambahkan teks centang sukses pada tombol produk 2 */
+#cart-item-2:checked ~ .container .main-content .content-2 label[for="cart-item-2"]::after {
+    content: " ✓ (Masuk Keranjang)";
+}
+
+/* Pengaturan tampilan hiasan huruf 'Z' besar */
+.corner-z {
+    position: absolute;
+    font-weight: bold;
+    color: #f1f1f1;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    user-select: none; /* Mencegah teks Z agar tidak bisa diblok/disorot mouse */
+    z-index: 10;
+}
+
+/* Posisi khusus huruf 'Z' di pojok kiri atas sebagai logo utama */
+.corner-z.top-left {
+    top: 15px; /* Jarak dari atas layar */
+    left: 40px; /* Jarak dari kiri layar */
+    font-size: 7.5rem; /* Ukuran huruf Z sangat besar */
+}
+
+/* Kotak pembungkus utama agar konten web berada di tengah dan tidak melebar */
+.container {
+    width: 90%; /* Lebar wadah mengambil 90% layar */
+    max-width: 1200px; /* Batas maksimal lebar wadah */
+    margin: 0 auto; /* Otomatis menempatkan kotak di tengah secara horizontal */
+    padding: 20px; /* Ruang dalam wadah */
+    flex: 1; /* Mengambil sisa ruang layar secara fleksibel */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    flex-direction: column; /* Menyusun elemen di dalamnya ke bawah secara vertikal */
+}
+
+/* Mengatur tata letak menu navigasi di bagian atas */
+.navbar {
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    justify-content: center; /* Memposisikan menu agar berada di tengah secara horizontal */
+    align-items: center; /* Menyelaraskan menu di tengah secara vertikal */
+    gap: 40px; /* Jarak antar menu navigasi */
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+/* Styling untuk teks dan ikon pada menu navigasi */
+.navbar .nav-item {
+    color: #ffffff;
+    text-decoration: none; /* Menghilangkan garis bawah bawaan tautan */
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 2px; /* Jarak antar huruf pada teks menu */
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    align-items: center; /* Menyelaraskan ikon dan teks */
+    gap: 8px; /* Jarak antara ikon dan teks */
+    transition: opacity 0.2s;
+}
+
+.navbar .nav-item:hover {
+    opacity: 0.8; /* Sedikit transparan saat kursor menyentuh menu */
+}
+
+.navbar .nav-item i {
+    font-size: 2rem; /* Ukuran khusus untuk ikon di dalam menu */
+}
+
+/* Tata letak untuk tombol pemilih produk (pencetan produk 1 & 2) */
+.product-selector {
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    justify-content: center; /* Posisi tombol di tengah secara horizontal */
+    gap: 15px; /* Jarak antar tombol pilihan produk */
+    margin-bottom: 30px;
+}
+
+/* Tampilan visual tombol pilihan produk */
+.select-btn {
+    background-color: rgba(0, 0, 0, 0.3); /* Warna latar hitam transparan */
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Garis tepi tipis transparan */
+    padding: 8px 20px; /* Ruang dalam tombol */
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 20px; /* Membuat sudut tombol melengkung seperti pil */
+    cursor: pointer; /* Kursor jadi bentuk tangan */
+    transition: all 0.2s ease;
+}
+
+.select-btn:hover {
+    background-color: rgba(0, 0, 0, 0.5); /* Latar jadi lebih gelap saat disentuh */
+}
+
+/* Mengubah warna tombol aktif saat produk yang bersangkutan sedang dipilih */
+#prod-1:checked ~ .container .product-selector .btn-1,
+#prod-2:checked ~ .container .product-selector .btn-2 {
+    background-color: #ffffff; /* Tombol berubah jadi warna putih */
+    color: #333333; /* Warna teks berubah jadi gelap */
+    border-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Efek bayangan lembut */
+}
+
+/* Sembunyikan seluruh konten deskripsi produk secara default */
+.product-content {
+    display: none;
+}
+
+/* Memunculkan konten deskripsi produk 1 saat tombol 1 dipilih */
+#prod-1:checked ~ .container .main-content .content-1 {
+    display: block;
+}
+
+/* Memunculkan konten deskripsi produk 2 saat tombol 2 dipilih */
+#prod-2:checked ~ .container .main-content .content-2 {
+    display: block;
+}
+
+/* Mengatur tata letak bagian konten tengah (foto dan teks berdampingan) */
+.main-content {
+    display: flex; /* Mengaktifkan sistem tata letak fleksibel */
+    flex-direction: row; /* Menyusun posisi elemen di dalam kotak secara menyamping dari kiri ke kanan */
+    gap: 40px; /* Memberikan jarak kosong sebesar 40 piksel antara foto dan teks */
+    align-items: flex-start; /* Menyelaraskan posisi elemen anak agar rata atas */
+    justify-content: center; /* Mengatur agar isi konten berada tepat di tengah secara horizontal */
+}
+
+/* Kotak utama pembungkus area foto produk */
+.product-image-box {
+    width: 280px; /* Lebar kotak foto */
+    height: 380px; /* Tinggi kotak foto */
+    background-color: #d1d1d1; /* Warna latar cadangan jika foto gagal dimuat */
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan di bawah kotak */
+    position: relative; /* Titik acuan posisi untuk foto di dalamnya */
+    overflow: hidden; /* Mencegah gambar agar tidak keluar dari batas kotak */
+}
+
+/* Pengaturan umum untuk kotak foto produk 1 dan 2 */
+.product-img {
+    position: absolute; /* Mengunci posisi foto menutupi seluruh kotak */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover; /* Memastikan foto menutupi area kotak secara pas */
+    background-position: center; /* Memposisikan foto tepat di tengah */
+    background-repeat: no-repeat; /* Mencegah gambar berulang */
+    display: none; /* Sembunyikan foto secara default */
+}
+
+/* Mengambil file gambar untuk Produk 1 (Angsa Hitam Matcha) */
+.img-1 {
+    background-image: url('angsa.jpg'); 
+}
+
+/* Mengambil file gambar untuk Produk 2 (Ican Kretek) */
+.img-2 {
+    background-image: url('ICAN.jpg'); 
+}
+
+/* Memunculkan foto 1 saat tombol produk 1 ditekan */
+#prod-1:checked ~ .container .main-content .product-image-box .img-1 {
+    display: block;
+}
+
+/* Memunculkan foto 2 saat tombol produk 2 ditekan */
+#prod-2:checked ~ .container .main-content .product-image-box .img-2 {
+    display: block;
+}
+
+/* Kotak pembungkus teks deskripsi di sebelah kanan */
+.product-description {
+    flex: 1; /* Mengambil sisa ruang kosong di sebelah kanan foto */
+    max-width: 700px; /* Batas maksimal lebar teks deskripsi */
+}
+
+/* Mengatur bentuk penanda daftar poin menjadi kotak kecil */
+.product-description ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
+
+/* Mengatur kerapian, ukuran, dan jarak antar baris teks penjelasan */
+.product-description li {
+    font-size: 0.95rem;
+    line-height: 1.6; /* Jarak spasi antar baris agar nyaman dibaca */
+    margin-bottom: 15px; /* Jarak ke bawah sebelum poin berikutnya */
+    text-align: justify; /* Membuat teks rata kiri-kanan */
+}
+
+/* Pengaturan kotak bagian bawah (footer) halaman */
+.footer-warning {
+    background-color: rgba(0, 0, 0, 0.2); /* Latar belakang hitam transparan */
+    padding: 12px 20px;
+    font-size: 0.8rem; /* Ukuran teks kecil */
+    border-top: 1px solid rgba(255, 255, 255, 0.1); /* Garis tipis di atas footer */
+    position: relative;
+    display: flex; /* Mengaktifkan tata letak fleksibel */
+    align-items: center; /* Sejajar vertikal di tengah */
+    justify-content: center; /* Posisi teks di tengah */
+}
+
+/* Posisi dan ukuran huruf 'Z' kecil hiasan di dalam footer */
+.footer-z-small {
+    position: absolute;
+    left: 25px; /* Menempatkan huruf Z di sisi kiri footer */
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f1f1f1;
+}
+
+

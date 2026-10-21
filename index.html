@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Angsa Hitam & Ican Kretek</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- CHECKBOX TERSEMBUNYI UNTUK PRODUK -->
+    <input type="checkbox" id="cart-item-1">
+    <input type="checkbox" id="cart-item-2">
+
+    <!-- CHECKBOX TERSEMBUNYI UNTUK STATUS CHECKOUT -->
+    <input type="checkbox" id="checkout-toggle">
+
+    <!-- CHECKBOX TERSEMBUNYI UNTUK MEMBUKA/MENUTUP POP-UP KERANJANG -->
+    <input type="checkbox" id="cart-toggle">
+
+    <!-- RADIO BUTTON UNTUK PERPINDAHAN PRODUK -->
+    <input type="radio" name="product-switch" id="prod-1" checked>
+    <input type="radio" name="product-switch" id="prod-2">
+
+    <!-- TOMBOL / IKON KERANJANG DI POJOK KANAN ATAS -->
+    <label for="cart-toggle" class="cart-indicator">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="cart-count"></span>
+    </label>
+
+    <!-- KOTAK POP-UP (MODAL) KERANJANG BELANJA -->
+    <div class="cart-modal">
+        <div class="cart-modal-content">
+            <h3>Keranjang Belanja Anda</h3>
+            
+            <div class="cart-items-list">
+                <p class="empty-msg">Keranjang kamu kosong boss.</p>
+                
+                <div class="cart-item item-1">
+                    <span>📦 Angsa Hitam Matcha</span>
+                    <label for="cart-item-1" class="remove-btn">×</label>
+                </div>
+
+                <div class="cart-item item-2">
+                    <span>📦 Ican Kretek</span>
+                    <label for="cart-item-2" class="remove-btn">×</label>
+                </div>
+
+                <div class="checkout-success-msg">
+                    🎉 Yeay! Pesanan kamu berhasil di-checkout! Silakan tunggu konfirmasi ya boss.
+                </div>
+            </div>
+
+            <div class="cart-modal-actions">
+                <label for="cart-toggle" class="close-cart-btn">Tutup</label>
+                <label for="checkout-toggle" class="checkout-btn">Checkout</label>
+                <!-- Tombol Belanja Lagi menggunakan tombol biasa (button) dengan fungsi reset yang aman dari bentrok lapisan -->
+                <button type="button" class="back-to-shop-btn" id="reset-shop-btn">Belanja Lagi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HURUF 'Z' BESAR DI POJOK KIRI ATAS -->
+    <div class="corner-z top-left">Z</div>
+
+    <!-- KOTAK PEMBUNGKUS UTAMA KONTEN -->
+    <div class="container">
+        
+        <!-- MENU NAVIGASI DI ATAS TENGAH -->
+        <header class="navbar">
+            <a href="#" class="nav-item">
+                <i class="fa-solid fa-house"></i>
+            </a>
+            <a href="#" class="nav-item about-text">ABOUT</a>
+            <a href="https://www.instagram.com/zahry_fathurohman_migfar?exln=OGtjOW9uODI2NWF1" target="_blank" class="nav-item contact-text">
+                <i class="fa-brands fa-instagram"></i> CONTACT
+            </a>
+        </header>
+
+        <!-- TOMBOL PEMILIH PRODUK -->
+        <div class="product-selector">
+            <label for="prod-1" class="select-btn btn-1">Angsa Hitam Matcha</label>
+            <label for="prod-2" class="select-btn btn-2">Ican Kretek</label>
+        </div>
+
+        <!-- KONTEN UTAMA -->
+        <main class="main-content">
+            
+            <div class="product-image-box">
+                <div class="product-img img-1"></div>
+                <div class="product-img img-2"></div>
+            </div>
+
+            <div class="product-description">
+                
+                <div class="product-content content-1">
+                    <ul>
+                        <li><strong>JENIS PRODUK:</strong> SIGARET PUTIH MESIN (SPM) ATAU KRETEK MILD MODERN DENGAN KAPSUL CLICK DI BAGIAN FILTER.</li>
+                        <li><strong>KARAKTER TEMBAKAU:</strong> RACIKAN TEMBAKAU PILIHAN YANG LEBIH HALUS (SMOOTH BLEND), DIRANCANG KHUSUS AGAR RASA DASAR TEMBAKAUNYA RINGAN DAN TIDAK MENDOMINASI, SEHINGGA PAS DIPADUKAN DENGAN FLAVOR TEH HIJAU.</li>
+                        <li><strong>SENSASI SEBELUM DIKLIK:</strong> TARIKANNYA RINGAN, SMOOTH DI TENGGOROKAN, DENGAN SEDIKIT SENTUHAN AROMA EARTHY KHAS DAUN TEH YANG NATURAL DAN TIDAK BIKIN ENEK.</li>
+                        <li><strong>SENSASI SESUDAH DIKLIK:</strong> NAH, BEGITU BOLA KECIL DI FILTER DITEKAN SAMPAI BUNYI "KLIK", CAIRAN EKSTRAK MATCHA DI DALAMNYA PECAH DAN MEMBERIKAN SENSASI MINT YANG ADEM DI MULUT SERTA AROMA KHAS MATCHA JEPANG YANG WANGI SAAT DIEMBUSKAN.</li>
+                    </ul>
+                    <label for="cart-item-1" class="add-to-cart-btn">Masukkan Keranjang</label>
+                </div>
+
+                <div class="product-content content-2">
+                    <ul>
+                        <li><strong>JENIS PRODUK:</strong> KRETEK LOKAL PILIHAN DENGAN AROMANYA YANG KHAS, MEMBERIKAN CITA RASA KLASIK YANG KUAT DAN MANIS DI BIBIR.</li>
+                        <li><strong>KARAKTER TEMBAKAU:</strong> MENGGUNAKAN TEMBAKAU DAN CENGKEH PILIHAN BERKUALITAS TINGGI, MENGHASILKAN BUNYI "KRETEK-KRETEK" KHAS SAAT DIBAKAR SERTA ASAP YANG PADAT DAN WANGI.</li>
+                        <li><strong>SENSASI SAAT DIHISAP:</strong> PERPADUAN PAS ANTARA HANGATNYA CENGKEH DAN GURIHNYA TEMBAKAU LOKAL, MEMBERIKAN KETENANGAN DAN KELAS TERSENDIRI BAGI PENIKMAT SETIA KRETEK.</li>
+                    </ul>
+                    <label for="cart-item-2" class="add-to-cart-btn">Masukkan Keranjang</label>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER DI BAWAH -->
+    <footer class="footer-warning">
+        <div class="footer-z-small">Z</div>
+        <p>Peringatan: Merokok menyebabkan kanker, serangan jantung, impotensi, dan gangguan kehamilan dan janin. | Layanan Berhenti Merokok: Hubungi 0800-177-6565 | 18+ | Informasi Produk & Kebijakan Privasi Indonesia</p>
+    </footer>
+
+    <!-- SKRIP KECIL UNTUK MEMASTIKAN TOMBOL BELANJA LAGI BERFUNGSI SEMPURNA -->
+    <script>
+        document.getElementById('reset-shop-btn').addEventListener('click', function() {
+            document.getElementById('cart-item-1').checked = false;
+            document.getElementById('cart-item-2').checked = false;
+            document.getElementById('checkout-toggle').checked = false;
+            document.getElementById('cart-toggle').checked = false;
+        });
+    </script>
+
+</body>
+</html>
