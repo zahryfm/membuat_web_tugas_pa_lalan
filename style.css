@@ -71,7 +71,7 @@ input[type="checkbox"] {
     width: 100%; /* Lebar penuh layar */
     height: 100%; /* Tinggi penuh layar */
     background-color: rgba(0, 0, 0, 0.6); /* Latar belakang gelap transparan di luar pop-up */
-    display: flex; /* Mengaktifkan tata letak fleksibel */
+    display: flex; /* Mengaktifkan sistem tata letak fleksibel */
     justify-content: center; /* Memposisikan pop-up di tengah secara horizontal */
     align-items: center; /* Memposisikan pop-up di tengah secara vertikal */
     z-index: 100; /* Lapisan paling atas agar menutupi segalanya */
@@ -250,7 +250,7 @@ input[type="checkbox"] {
     line-height: 1.4;
 }
 
-/* LOGIKA CSS: Saat tombol checkout ditekan, sembunyikan daftar produk di dalam pop-up */
+/* Sembunyikan daftar produk di dalam pop-up saat tombol checkout ditekan */
 #checkout-toggle:checked ~ .cart-modal .cart-items-list .cart-item {
     display: none !important;
 }
@@ -264,15 +264,29 @@ input[type="checkbox"] {
     display: block;
 }
 
-/* Sembunyikan tombol Tutup dan Checkout biasa hanya setelah tombol checkout benar-benar diklik */
+/* Sembunyikan tombol Tutup dan Checkout biasa setelah checkout aktif */
 #checkout-toggle:checked ~ .cart-modal .close-cart-btn,
 #checkout-toggle:checked ~ .cart-modal .checkout-btn {
     display: none;
 }
 
-/* Munculkan tombol Belanja Lagi hanya setelah proses checkout aktif */
+/* Munculkan tombol Belanja Lagi setelah checkout aktif */
 #checkout-toggle:checked ~ .cart-modal .back-to-shop-btn {
     display: block;
+}
+
+/* LOGIKA CSS MURNI: Jika reset-toggle dicentang (Belanja Lagi diklik), paksa uncheck item dan checkout */
+#reset-toggle:checked ~ #cart-item-1,
+#reset-toggle:checked ~ #cart-item-2,
+#reset-toggle:checked ~ #checkout-toggle,
+#reset-toggle:checked ~ #cart-toggle {
+    display: none;
+}
+
+/* Saat reset-toggle aktif, pastikan modal keranjang tertutup total */
+#reset-toggle:checked ~ .cart-modal {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* Styling visual tombol "Masukkan Keranjang" di halaman utama */
@@ -298,20 +312,18 @@ input[type="checkbox"] {
     transform: scale(0.96); /* Efek tombol sedikit mengecil saat ditekan */
 }
 
-/* LOGIKA CSS: Mengubah warna tombol jadi hijau saat produk 1 dimasukkan ke keranjang */
+/* Mengubah warna tombol jadi hijau saat produk 1 dimasukkan ke keranjang */
 #cart-item-1:checked ~ .container .main-content .content-1 label[for="cart-item-1"] {
     background-color: #4CAF50;
 }
-/* Menambahkan teks centang sukses pada tombol produk 1 */
 #cart-item-1:checked ~ .container .main-content .content-1 label[for="cart-item-1"]::after {
     content: " ✓ (Masuk Keranjang)";
 }
 
-/* LOGIKA CSS: Mengubah warna tombol jadi hijau saat produk 2 dimasukkan ke keranjang */
+/* Mengubah warna tombol jadi hijau saat produk 2 dimasukkan ke keranjang */
 #cart-item-2:checked ~ .container .main-content .content-2 label[for="cart-item-2"] {
     background-color: #4CAF50;
 }
-/* Menambahkan teks centang sukses pada tombol produk 2 */
 #cart-item-2:checked ~ .container .main-content .content-2 label[for="cart-item-2"]::after {
     content: " ✓ (Masuk Keranjang)";
 }
@@ -517,5 +529,3 @@ input[type="checkbox"] {
     font-weight: bold;
     color: #f1f1f1;
 }
-
-

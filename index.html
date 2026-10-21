@@ -1,99 +1,129 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- Pengaturan jenis karakter standar internasional (UTF-8) -->
     <meta charset="UTF-8">
+    <!-- Membuat tampilan responsif menyesuaikan ukuran layar perangkat (HP, tablet, PC) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Judul halaman yang tampil di tab browser -->
     <title>Katalog Angsa Hitam & Ican Kretek</title>
+    <!-- Menghubungkan file HTML ke lembar gaya eksternal (style.css) -->
     <link rel="stylesheet" href="style.css">
+    <!-- Memuat pustaka ikon FontAwesome untuk ikon keranjang, rumah, dan media sosial -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- CHECKBOX TERSEMBUNYI UNTUK PRODUK -->
+    <!-- CHECKBOX TERSEMBUNYI UNTUK PRODUK 1 (Angsa Hitam Matcha) -->
     <input type="checkbox" id="cart-item-1">
+    <!-- CHECKBOX TERSEMBUNYI UNTUK PRODUK 2 (Ican Kretek) -->
     <input type="checkbox" id="cart-item-2">
 
     <!-- CHECKBOX TERSEMBUNYI UNTUK STATUS CHECKOUT -->
     <input type="checkbox" id="checkout-toggle">
 
-    <!-- CHECKBOX TERSEMBUNYI UNTUK MEMBUKA/MENUTUP POP-UP KERANJANG -->
+    <!-- CHECKBOX TERSEMBUNYI KHUSUS UNTUK MERESET TOTAL KETIKA TOMBOL "BELANJA LAGI" DIKLIK -->
+    <input type="checkbox" id="reset-toggle">
+
+    <!-- CHECKBOX TERSEMBUNYI UNTUK MEMBUKA DAN MENUTUP POP-UP KERANJANG -->
     <input type="checkbox" id="cart-toggle">
 
-    <!-- RADIO BUTTON UNTUK PERPINDAHAN PRODUK -->
+    <!-- RADIO BUTTON UNTUK PERPINDAHAN PRODUK 1 (AKTIF SECARA BAWAAN) -->
     <input type="radio" name="product-switch" id="prod-1" checked>
+    <!-- RADIO BUTTON UNTUK PERPINDAHAN PRODUK 2 -->
     <input type="radio" name="product-switch" id="prod-2">
 
     <!-- TOMBOL / IKON KERANJANG DI POJOK KANAN ATAS -->
     <label for="cart-toggle" class="cart-indicator">
         <i class="fa-solid fa-cart-shopping"></i>
+        <!-- Elemen penampil jumlah angka barang di dalam keranjang -->
         <span class="cart-count"></span>
     </label>
 
     <!-- KOTAK POP-UP (MODAL) KERANJANG BELANJA -->
     <div class="cart-modal">
         <div class="cart-modal-content">
+            <!-- Judul di dalam pop-up keranjang -->
             <h3>Keranjang Belanja Anda</h3>
             
+            <!-- Wadah daftar item produk yang dipilih -->
             <div class="cart-items-list">
+                <!-- Teks pemberitahuan jika belum ada produk yang dipilih -->
                 <p class="empty-msg">Keranjang kamu kosong boss.</p>
                 
+                <!-- Baris tampilan Produk 1 di dalam keranjang -->
                 <div class="cart-item item-1">
                     <span>📦 Angsa Hitam Matcha</span>
+                    <!-- Tombol 'X' untuk menghapus Produk 1 dari keranjang -->
                     <label for="cart-item-1" class="remove-btn">×</label>
                 </div>
 
+                <!-- Baris tampilan Produk 2 di dalam keranjang -->
                 <div class="cart-item item-2">
                     <span>📦 Ican Kretek</span>
+                    <!-- Tombol 'X' untuk menghapus Produk 2 dari keranjang -->
                     <label for="cart-item-2" class="remove-btn">×</label>
                 </div>
 
+                <!-- Pesan sukses yang muncul setelah tombol checkout ditekan -->
                 <div class="checkout-success-msg">
                     🎉 Yeay! Pesanan kamu berhasil di-checkout! Silakan tunggu konfirmasi ya boss.
                 </div>
             </div>
 
+            <!-- Kumpulan tombol aksi di bagian bawah pop-up -->
             <div class="cart-modal-actions">
+                <!-- Tombol untuk menutup pop-up keranjang -->
                 <label for="cart-toggle" class="close-cart-btn">Tutup</label>
+                <!-- Tombol untuk melanjutkan proses checkout -->
                 <label for="checkout-toggle" class="checkout-btn">Checkout</label>
-                <!-- Tombol Belanja Lagi menggunakan tombol biasa (button) dengan fungsi reset yang aman dari bentrok lapisan -->
-                <button type="button" class="back-to-shop-btn" id="reset-shop-btn">Belanja Lagi</button>
+                <!-- Tombol Belanja Lagi yang terhubung ke reset-toggle untuk membersihkan keranjang secara total -->
+                <label for="reset-toggle" class="back-to-shop-btn">Belanja Lagi</label>
             </div>
         </div>
     </div>
 
-    <!-- HURUF 'Z' BESAR DI POJOK KIRI ATAS -->
+    <!-- HIASAN HURUF 'Z' BESAR DI POJOK KIRI ATAS -->
     <div class="corner-z top-left">Z</div>
 
-    <!-- KOTAK PEMBUNGKUS UTAMA KONTEN -->
+    <!-- KOTAK PEMBUNGKUS UTAMA SELURUH KONTEN WEB -->
     <div class="container">
         
         <!-- MENU NAVIGASI DI ATAS TENGAH -->
         <header class="navbar">
+            <!-- Tautan ikon beranda (Home) -->
             <a href="#" class="nav-item">
                 <i class="fa-solid fa-house"></i>
             </a>
+            <!-- Tautan halaman About -->
             <a href="#" class="nav-item about-text">ABOUT</a>
+            <!-- Tautan kontak mengarah ke Instagram -->
             <a href="https://www.instagram.com/zahry_fathurohman_migfar?exln=OGtjOW9uODI2NWF1" target="_blank" class="nav-item contact-text">
                 <i class="fa-brands fa-instagram"></i> CONTACT
             </a>
         </header>
 
-        <!-- TOMBOL PEMILIH PRODUK -->
+        <!-- TOMBOL PEMILIH PRODUK (DI BAWAH NAVBAR) -->
         <div class="product-selector">
+            <!-- Tombol untuk beralih ke Produk 1 -->
             <label for="prod-1" class="select-btn btn-1">Angsa Hitam Matcha</label>
+            <!-- Tombol untuk beralih ke Produk 2 -->
             <label for="prod-2" class="select-btn btn-2">Ican Kretek</label>
         </div>
 
-        <!-- KONTEN UTAMA -->
+        <!-- KONTEN UTAMA (TERDIRI DARI FOTO DI KIRI DAN DESKRIPSI DI KANAN) -->
         <main class="main-content">
             
+            <!-- Kotak pembungkus gambar produk -->
             <div class="product-image-box">
                 <div class="product-img img-1"></div>
                 <div class="product-img img-2"></div>
             </div>
 
+            <!-- Kotak pembungkus teks penjelasan produk -->
             <div class="product-description">
                 
+                <!-- KONTEN DESKRIPSI PRODUK 1 -->
                 <div class="product-content content-1">
                     <ul>
                         <li><strong>JENIS PRODUK:</strong> SIGARET PUTIH MESIN (SPM) ATAU KRETEK MILD MODERN DENGAN KAPSUL CLICK DI BAGIAN FILTER.</li>
@@ -101,15 +131,18 @@
                         <li><strong>SENSASI SEBELUM DIKLIK:</strong> TARIKANNYA RINGAN, SMOOTH DI TENGGOROKAN, DENGAN SEDIKIT SENTUHAN AROMA EARTHY KHAS DAUN TEH YANG NATURAL DAN TIDAK BIKIN ENEK.</li>
                         <li><strong>SENSASI SESUDAH DIKLIK:</strong> NAH, BEGITU BOLA KECIL DI FILTER DITEKAN SAMPAI BUNYI "KLIK", CAIRAN EKSTRAK MATCHA DI DALAMNYA PECAH DAN MEMBERIKAN SENSASI MINT YANG ADEM DI MULUT SERTA AROMA KHAS MATCHA JEPANG YANG WANGI SAAT DIEMBUSKAN.</li>
                     </ul>
+                    <!-- Tombol untuk memasukkan produk 1 ke dalam keranjang -->
                     <label for="cart-item-1" class="add-to-cart-btn">Masukkan Keranjang</label>
                 </div>
 
+                <!-- KONTEN DESKRIPSI PRODUK 2 -->
                 <div class="product-content content-2">
                     <ul>
                         <li><strong>JENIS PRODUK:</strong> KRETEK LOKAL PILIHAN DENGAN AROMANYA YANG KHAS, MEMBERIKAN CITA RASA KLASIK YANG KUAT DAN MANIS DI BIBIR.</li>
                         <li><strong>KARAKTER TEMBAKAU:</strong> MENGGUNAKAN TEMBAKAU DAN CENGKEH PILIHAN BERKUALITAS TINGGI, MENGHASILKAN BUNYI "KRETEK-KRETEK" KHAS SAAT DIBAKAR SERTA ASAP YANG PADAT DAN WANGI.</li>
                         <li><strong>SENSASI SAAT DIHISAP:</strong> PERPADUAN PAS ANTARA HANGATNYA CENGKEH DAN GURIHNYA TEMBAKAU LOKAL, MEMBERIKAN KETENANGAN DAN KELAS TERSENDIRI BAGI PENIKMAT SETIA KRETEK.</li>
                     </ul>
+                    <!-- Tombol untuk memasukkan produk 2 ke dalam keranjang -->
                     <label for="cart-item-2" class="add-to-cart-btn">Masukkan Keranjang</label>
                 </div>
 
@@ -117,21 +150,13 @@
         </main>
     </div>
 
-    <!-- FOOTER DI BAWAH -->
+    <!-- FOOTER DI BAGIAN BAWAH HALAMAN -->
     <footer class="footer-warning">
+        <!-- Hiasan huruf Z kecil di sisi kiri footer -->
         <div class="footer-z-small">Z</div>
+        <!-- Teks peringatan kesehatan dan informasi layanan -->
         <p>Peringatan: Merokok menyebabkan kanker, serangan jantung, impotensi, dan gangguan kehamilan dan janin. | Layanan Berhenti Merokok: Hubungi 0800-177-6565 | 18+ | Informasi Produk & Kebijakan Privasi Indonesia</p>
     </footer>
-
-    <!-- SKRIP KECIL UNTUK MEMASTIKAN TOMBOL BELANJA LAGI BERFUNGSI SEMPURNA -->
-    <script>
-        document.getElementById('reset-shop-btn').addEventListener('click', function() {
-            document.getElementById('cart-item-1').checked = false;
-            document.getElementById('cart-item-2').checked = false;
-            document.getElementById('checkout-toggle').checked = false;
-            document.getElementById('cart-toggle').checked = false;
-        });
-    </script>
 
 </body>
 </html>
